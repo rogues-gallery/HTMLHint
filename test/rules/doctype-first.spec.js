@@ -1,32 +1,25 @@
-/**
- * Copyright (c) 2015, Yanis Wang <yanis.wang@gmail.com>
- * MIT Licensed
- */
+const expect = require('expect.js')
 
-var expect  = require("expect.js");
+const HTMLHint = require('../../dist/htmlhint.js').HTMLHint
 
-var HTMLHint  = require("../../index").HTMLHint;
+const ruldId = 'doctype-first'
+const ruleOptions = {}
 
-var ruldId = 'doctype-first',
-    ruleOptions = {};
+ruleOptions[ruldId] = true
 
-ruleOptions[ruldId] = true;
+describe(`Rules: ${ruldId}`, () => {
+  it('Doctype not be first should result in an error', () => {
+    const code = '<html></html>'
+    const messages = HTMLHint.verify(code, ruleOptions)
+    expect(messages.length).to.be(1)
+    expect(messages[0].rule.id).to.be(ruldId)
+    expect(messages[0].line).to.be(1)
+    expect(messages[0].col).to.be(1)
+  })
 
-describe('Rules: '+ruldId, function(){
-
-    it('Doctype not be first should result in an error', function(){
-        var code = '<html></html>';
-        var messages = HTMLHint.verify(code, ruleOptions);
-        expect(messages.length).to.be(1);
-        expect(messages[0].rule.id).to.be(ruldId);
-        expect(messages[0].line).to.be(1);
-        expect(messages[0].col).to.be(1);
-    });
-
-    it('Doctype be first should not result in an error', function(){
-        var code = '<!DOCTYPE HTML><html>';
-        var messages = HTMLHint.verify(code, ruleOptions);
-        expect(messages.length).to.be(0);
-    });
-
-});
+  it('Doctype be first should not result in an error', () => {
+    const code = '<!DOCTYPE HTML><html>'
+    const messages = HTMLHint.verify(code, ruleOptions)
+    expect(messages.length).to.be(0)
+  })
+})

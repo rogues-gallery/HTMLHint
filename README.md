@@ -1,81 +1,141 @@
-# HTMLHint
+<h1 align="center">
+  <br>
+  <a href="https://htmlhint.com"><img src="https://raw.githubusercontent.com/htmlhint/HTMLHint/master/website/static/img/htmlhint.png" alt="Logo HTMLHint" width="170"></a>
+  <br>
+  HTMLHint
+  <br>
+</h1>
 
-[![Build Status](https://img.shields.io/travis/thedaviddias/HTMLHint.svg)](https://travis-ci.org/thedaviddias/HTMLHint)
-[![codecov](https://codecov.io/gh/thedaviddias/HTMLHint/branch/master/graph/badge.svg)](https://codecov.io/gh/thedaviddias/HTMLHint)
-[![NPM version](https://img.shields.io/npm/v/htmlhint.svg?style=flat)](https://www.npmjs.com/package/htmlhint)
-[![NPM count](https://img.shields.io/npm/dm/htmlhint.svg?style=flat)](https://www.npmjs.com/package/htmlhint)
-[![License](https://img.shields.io/npm/l/htmlhint.svg?style=flat)](https://www.npmjs.com/package/htmlhint)
+<h4 align="center">The static code analysis tool you need for your HTML.</h4>
 
-HTMLHint is a Static Code Analysis Tool for HTML, you can use it with IDE or in build system.
+<p align="center">
+  <a href="https://travis-ci.org/htmlhint/HTMLHint">
+    <img src="https://img.shields.io/travis/htmlhint/HTMLHint.svg" alt="Travis Build Status">
+  </a>
+  <a href="https://codecov.io/gh/htmlhint/HTMLHint">
+    <img src="https://codecov.io/gh/htmlhint/HTMLHint/branch/master/graph/badge.svg" alt="Codecov">
+  </a>
+  <a href="https://www.npmjs.com/package/htmlhint">
+    <img src="https://img.shields.io/npm/dm/htmlhint.svg" alt="NPM count">
+  </a>
+  <img src="https://badgen.net/badge/license/MIT/green" alt="MIT Licence" />
+  <a href="https://discord.gg/nJ6J9CP">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" alt="Chat">
+  </a>
+  <a href="http://roadmap.htmlhint.io/roadmap">
+    <img src="https://img.shields.io/badge/check-our%20roadmap-EE503E.svg" alt="Chat">
+  </a>
+</p>
 
-## Getting started
+<p align="center">
+  <a href="#installation-and-usage">How To Use</a> • <a href="#contributing">Contributing</a> • <a href="https://htmlhint.com">Website</a>
+</p>
 
-1. Installation & hints
+## Table of Contents
 
-        npm install htmlhint -g
-        htmlhint -V
-        htmlhint --help
-        htmlhint www
-        htmlhint www/test.html
-        htmlhint www/**/*.xhtml
-        htmlhint www/**/*.{htm,html}
-        htmlhint http://www.alibaba.com/
-        cat test.html | htmlhint stdin
+- **[Installation and Usage](#-installation-and-usage)**
+  - **[Local Installation and Usage](#local-installation-and-usage)**
+  - **[Global Installation and Usage](#global-installation-and-usage)**
+- **[Example output](#-example-output)**
+- **[Configuration](#-configuration)**
+- **[Docs](#-docs)**
 
-2. Results
+## 📟 Installation and Usage
 
-           test.html
-              L5 |    </head>
-                      ^ <title> must be present in <head> tag. (title-require)
-              L8 |    </body>
-                      ^ Tag must be paired, missing: [ </div> ], start tag match failed [ <div> ] on line 7. (tag-pair)
+Prerequisites: Node.js (>=6.14), npm version 3+.
 
-        2 errors in 1 files
+There are two ways to install HTMLHint: globally and locally.
 
-3. Config rules
+### Local Installation and Usage
 
-    search `.htmlhintrc` file in current directory and all parent directories:
+In case you want to include HTMLHint as part of your project, you can install it locally using NPM:
 
-        htmlhint
-        htmlhint test.html
+```
+$ npm install htmlhint --save-dev
+```
 
-    custom config file:
+After that, You can run HTMLHint on any file or directory like this:
 
-        htmlhint --config htmlhint.conf test.html
+```
+$ ./node_modules/.bin/htmlhint www/index.html
+$ ./node_modules/.bin/htmlhint www/**/*.html
+```
 
-    custom rules:
+### Global Installation and Usage
 
-        htmlhint --rules tag-pair,id-class-value=underline test.html
+If you want to make HTMLHint available to tools that run across all of your projects, you can install HTMLHint globally using NPM:
 
-    Inline rules in `test.html`:
+```
+$ npm install htmlhint -g
+```
 
-        <!--htmlhint tag-pair,id-class-value:underline -->
-        <html>
-        <head>
-            ...
+After that, you can run HTMLHint on any file like this:
 
-## Guide
+```
+$ htmlhint www/index.html
+$ htmlhint www/**/*.html
+```
 
-1. [How to use](https://github.com/thedaviddias/HTMLHint/wiki/Usage)
-2. [All Rules](https://github.com/thedaviddias/HTMLHint/wiki/Rules)
-2. [How to Develop](https://github.com/thedaviddias/HTMLHint/wiki/Developer-guide)
+You can even launch HTMLHint to analyse an URL:
 
-## License
+```
+$ htmlhint https://htmlhint.com/
+```
 
-[The MIT License](https://raw.githubusercontent.com/thedaviddias/HTMLHint/master/LICENSE).
+## 📃 Example output
 
-## Contributors
+## 🔧 Configuration
+
+Search `.htmlhintrc` file in current directory and all parent directories:
+
+```
+$ htmlhint
+$ htmlhint test.html
+```
+
+Custom config file:
+
+```
+$ htmlhint --config htmlhint.conf test.html
+```
+
+Custom rules:
+
+```
+$ htmlhint --rules tag-pair,id-class-value=underline index.html
+```
+
+Inline rules in `test.html`:
+
+```
+<!--htmlhint tag-pair,id-class-value:underline -->
+<html>
+<head>
+...
+```
+
+## 📙 Docs
+
+1. [How to use](https://htmlhint.com/docs/user-guide/usage/cli)
+2. [All Rules](https://htmlhint.com/docs/user-guide/list-rules)
+3. [How to Develop](CONTRIBUTING.md)
+
+## © License
+
+[MIT License](./LICENSE.md)
+
+## 💪🏻 Contributors
 
 This project exists thanks to all these people. [Contribute](CONTRIBUTING.md).
-<a href="https://github.com/thedaviddias/HTMLHint/graphs/contributors"><img src="https://opencollective.com/htmlhint/contributors.svg?width=890" /></a>
+<a href="https://github.com/htmlhint/HTMLHint/graphs/contributors"><img src="https://opencollective.com/htmlhint/contributors.svg?width=890" /></a>
 
-## Backers
+## 🏅 Backers
 
-Thank you to all our backers! [Become a backer](https://opencollective.com/stylelint#backer).
+Thank you to all our backers! [Become a backer](https://opencollective.com/htmlhint#backer).
 
 <a href="https://opencollective.com/htmlhint#backers" target="_blank"><img src="https://opencollective.com/htmlhint/backers.svg?width=890"></a>
 
-## Sponsors
+## 🎖 Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [Become a sponsor](https://opencollective.com/htmlhint#sponsor).
 

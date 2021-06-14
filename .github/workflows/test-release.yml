@@ -1,0 +1,59 @@
+name: Test Release
+
+on:
+  pull_request:
+    branches:
+      - '+([0-9])?(.{+([0-9]),x}).x'
+      - main
+      - master
+      - alpha
+      - beta
+      - next
+      - next-major
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test-release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14]
+        os: [ubuntu-latest]
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v1
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+        env:
+          HUSKY_SKIP_INSTALL: true
+
+      - name: 🏗 Build
+        run: npm run build
+
+      - name: 🚢 Release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          dry_run: true
+          semantic_version: 17
+          extra_plugins: |
+            @semantic-release/changelog@3.0.0
+            @semantic-release/git@9.0.0
+          branches: |
+            [
+              'master',
+              'next',
+              'next-major',
+              {name: 'beta', prerelease: true},
+              {name: 'alpha', prerelease: true}
+            ]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+

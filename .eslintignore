@@ -1,0 +1,11 @@
+node_modules
+
+# Automatically generated directories
+bin
+dist
+
+# Website directory
+website
+
+# eslint cannot lint itself
+.eslintrc.js
