@@ -1,0 +1,28 @@
+# labels auto assigned to PR, keep in sync with labels.yml
+test:
+  - changed-files:
+      - any-glob-to-any-file:
+          - test/**/*.spec.*
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - package.json
+          - yarn.lock
+          - package-lock.json
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/**.md'
+          - website/
+automation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/
+core:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/core/
+cli:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/cli/

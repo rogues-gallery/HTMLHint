@@ -1,0 +1,89 @@
+name: Development workflow
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - 'website/**'
+      - '**/*.md'
+      - '**/*.mdx'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+
+      - name: 📥 Download deps
+        run: npm ci
+
+      - name: 🧪 Run lint
+        run: npm run lint
+
+  build:
+    runs-on: ${{ matrix.os }}
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 20
+          - 22
+          - 24
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.1
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: 📥 Download deps
+        run: npm ci
+
+      - name: 🏗 Build
+        run: npm run build
+
+      - name: Ensure no git changes
+        run: git diff --exit-code
+
+      - name: Run tests
+        if: matrix.os != 'ubuntu-latest'
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: npm run test
+
+      - name: Run coverage
+        if: matrix.node == '20' && matrix.os == 'ubuntu-latest'
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: npm run test:coverage
+
+      - name: ⬆️ Upload coverage to Codecov
+        if: matrix.node == '20' && matrix.os == 'ubuntu-latest'
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage/coverage-final.json
+          name: codecov-dev
+          token: ${{ secrets.CODECOV_TOKEN }}

@@ -1,37 +1,28 @@
-/**
- * Copyright (c) 2015, Yanis Wang <yanis.wang@gmail.com>
- * MIT Licensed
- */
+const HTMLHint = require('../../dist/htmlhint.js').HTMLHint
 
-var expect  = require("expect.js");
+const ruleId = 'tag-self-close'
+const ruleOptions = {}
 
-var HTMLHint  = require("../../index").HTMLHint;
+ruleOptions[ruleId] = true
 
-var ruldId = 'tag-self-close',
-    ruleOptions = {};
+describe(`Rules: ${ruleId}`, () => {
+  it('The empty tag no closed should result in an error', () => {
+    const code = '<br><img src="test.jpg">'
+    const messages = HTMLHint.verify(code, ruleOptions)
+    expect(messages.length).toBe(2)
+    expect(messages[0].rule.id).toBe(ruleId)
+    expect(messages[0].line).toBe(1)
+    expect(messages[0].col).toBe(1)
+    expect(messages[0].type).toBe('warning')
+    expect(messages[1].rule.id).toBe(ruleId)
+    expect(messages[1].line).toBe(1)
+    expect(messages[1].col).toBe(5)
+    expect(messages[1].type).toBe('warning')
+  })
 
-ruleOptions[ruldId] = true;
-
-describe('Rules: '+ruldId, function(){
-
-    it('The empty tag no closed should result in an error', function(){
-        var code = '<br><img src="test.jpg">';
-        var messages = HTMLHint.verify(code, ruleOptions);
-        expect(messages.length).to.be(2);
-        expect(messages[0].rule.id).to.be(ruldId);
-        expect(messages[0].line).to.be(1);
-        expect(messages[0].col).to.be(1);
-        expect(messages[0].type).to.be('warning');
-        expect(messages[1].rule.id).to.be(ruldId);
-        expect(messages[1].line).to.be(1);
-        expect(messages[1].col).to.be(5);
-        expect(messages[1].type).to.be('warning');
-    });
-
-    it('Closed empty tag should not result in an error', function(){
-        var code = '<br /><img src="a.jpg"/>';
-        var messages = HTMLHint.verify(code, ruleOptions);
-        expect(messages.length).to.be(0);
-    });
-
-});
+  it('Closed empty tag should not result in an error', () => {
+    const code = '<br /><img src="a.jpg"/>'
+    const messages = HTMLHint.verify(code, ruleOptions)
+    expect(messages.length).toBe(0)
+  })
+})

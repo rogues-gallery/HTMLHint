@@ -1,18 +1,9 @@
-/**
- * Copyright (c) 2015, Yanis Wang <yanis.wang@gmail.com>
- * MIT Licensed
- */
+const HTMLHint = require('../../dist/htmlhint.js').HTMLHint
 
-var expect  = require("expect.js");
-
-var HTMLHint  = require("../../index").HTMLHint;
-
-describe('Rules: default', function(){
-
-    it('should result 3 errors', function(){
-        var code = '<p TEST="abc">';
-        var messages = HTMLHint.verify(code);
-        expect(messages.length).to.be(3);
-    });
-
-});
+describe('Rules: default', () => {
+  it('should result 3 errors', () => {
+    const code = '<p TEST="abc">'
+    const messages = HTMLHint.verify(code)
+    expect(messages.length).toBe(3)
+  })
+})

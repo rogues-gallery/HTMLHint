@@ -1,39 +1,30 @@
-/**
- * Copyright (c) 2015, Yanis Wang <yanis.wang@gmail.com>
- * MIT Licensed
- */
+const HTMLHint = require('../../dist/htmlhint.js').HTMLHint
 
-var expect  = require("expect.js");
+const ruleId = 'attr-value-not-empty'
+const ruleOptions = {}
 
-var HTMLHint  = require("../../index").HTMLHint;
+ruleOptions[ruleId] = true
 
-var ruldId = 'attr-value-not-empty',
-    ruleOptions = {};
+describe(`Rules: ${ruleId}`, () => {
+  it('Attribute value have no value should result in an error', () => {
+    const code = '<input disabled>'
+    const messages = HTMLHint.verify(code, ruleOptions)
+    expect(messages.length).toBe(1)
+    expect(messages[0].rule.id).toBe(ruleId)
+    expect(messages[0].line).toBe(1)
+    expect(messages[0].col).toBe(7)
+    expect(messages[0].type).toBe('warning')
+  })
 
-ruleOptions[ruldId] = true;
+  it('Attribute value closed by quote but no value should not result in an error', () => {
+    const code = '<input disabled="">'
+    const messages = HTMLHint.verify(code, ruleOptions)
+    expect(messages.length).toBe(0)
+  })
 
-describe('Rules: '+ruldId, function(){
-
-    it('Attribute value have no value should result in an error', function(){
-        var code = '<input disabled>';
-        var messages = HTMLHint.verify(code, ruleOptions);
-        expect(messages.length).to.be(1);
-        expect(messages[0].rule.id).to.be(ruldId);
-        expect(messages[0].line).to.be(1);
-        expect(messages[0].col).to.be(7);
-        expect(messages[0].type).to.be('warning');
-    });
-
-    it('Attribute value closed by quote but no value should not result in an error', function(){
-        var code = '<input disabled="">';
-        var messages = HTMLHint.verify(code, ruleOptions);
-        expect(messages.length).to.be(0);
-    });
-
-    it('Attribute value closed by quote and have value should not result in an error', function(){
-        var code = '<input disabled="disabled">';
-        var messages = HTMLHint.verify(code, ruleOptions);
-        expect(messages.length).to.be(0);
-    });
-
-});
+  it('Attribute value closed by quote and have value should not result in an error', () => {
+    const code = '<input disabled="disabled">'
+    const messages = HTMLHint.verify(code, ruleOptions)
+    expect(messages.length).toBe(0)
+  })
+})
